@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <style>
+      body {
+         max-width: 35rem;
+         margin: 5rem auto;
+         padding: 0 1rem;
+         background: white;
+         color: #333;
+         font: 16px/1.5 'Lucida Sans Typewriter', 'Lucida Console', monospace;
+         -webkit-font-smoothing: antialiased;
+      }
+      ::selection {
+         background-color: #fff888;
+      }
+      #md {
+         width:100%;
+         height:60vh;
+         word-break: break-all;
+      }
+      #mdd {
+         display: none;
+      }
+      a:link,a:visited {
+         text-decoration: none;
+         color: #555;
+      }
+      a:hover,a:active {
+         text-decoration: underline;
+      }
+   </style>
+</head>
+
+<body>
+   <div id="mdd">
+      <textarea id="md" placeholder="Markdown"></textarea>
+   </div>
+   <div id="ht"></div>
+   <!-- <script src="marked.min.js"></script> -->
+   <script src="script.js"></script>
+</body>
+
+</html>
