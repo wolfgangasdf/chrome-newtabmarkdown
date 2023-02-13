@@ -1,13 +1,14 @@
 {
-   "manifest_version": 2,
+   "manifest_version": 3,
    "name": "Chrome New Tab Markdown",
-   "version": "1.0",
+   "version": "1.1",
    "description": "Overrides Chrome's new tab page with a small markdown notebook.",
    "homepage_url": "https://github.com/wolfgangasdf/chrome-newtabmarkdown",
    "chrome_url_overrides": {
       "newtab": "index.html"
    },
-   "web_accessible_resources": [
-      "README.md", "marked.min.js"
-  ]
+   "web_accessible_resources": [{
+      "resources": ["README.md", "marked.min.js"],
+      "matches": []
+   }]
 }
