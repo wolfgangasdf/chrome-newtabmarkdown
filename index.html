@@ -5,7 +5,7 @@
    <meta charset="utf-8">
    <style>
       body {
-         max-width: 35rem;
+         max-width: 40rem;
          margin: 5rem auto;
          padding: 0 1rem;
          background: white;
@@ -17,12 +17,10 @@
          background-color: #fff888;
       }
       #md {
+         padding: 10px;
          width:100%;
          height:60vh;
          word-break: break-all;
-      }
-      #mdd {
-         display: none;
       }
       a:link,a:visited {
          text-decoration: none;
@@ -31,15 +29,29 @@
       a:hover,a:active {
          text-decoration: underline;
       }
+      #infos {
+         background: #DFD;
+         padding: 10px;
+      }
+      .hidden {
+         display: none;
+      }
    </style>
 </head>
 
 <body>
-   <div id="mdd">
+   <div id="mdd" class="hidden">
       <textarea id="md" placeholder="Markdown"></textarea>
    </div>
    <div id="ht"></div>
-   <!-- <script src="marked.min.js"></script> -->
+   <div id="infos" class="hidden">
+      <h1>Information</h1>
+      Homepage: <a target="none" href="https://github.com/wolfgangasdf/chrome-newtabmarkdown">https://github.com/wolfgangasdf/chrome-newtabmarkdown</a>
+      <ul>
+         <li>Escape or double-click toggles editing</li>
+         <li>Press cmd/ctrl + s to download a backup</li>
+      </ul>
+   </div>
    <script src="script.js"></script>
 </body>
 

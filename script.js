@@ -1,6 +1,7 @@
 var md = document.getElementById("md");
 var mdd = document.getElementById("mdd");
 var ht = document.getElementById("ht");
+var infos = document.getElementById("infos");
 
 async function markedIniAndRender() { // add source pos tags for headings to marked.js
    await import(chrome.runtime.getURL("marked.min.js"));
@@ -50,13 +51,15 @@ function updatemd(s) {
 };
 
 function toggleEditor(showonly = false) {
-   if (!showonly && mdd.style.display === "block") { // close editor, save
+   if (!showonly && !mdd.classList.contains("hidden")) { // close editor, save
       localStorage.setItem('notes', md.value);
       localStorage.setItem('notes-html', ht.innerHTML);
-      mdd.style.display = "none";
+      mdd.classList.add("hidden")
+      infos.classList.add("hidden")
    } else { // edit
-      mdd.style.display = "block";
+      mdd.classList.remove("hidden")
       md.focus();
+      infos.classList.remove("hidden")
    }
 };
 
@@ -115,6 +118,5 @@ document.onkeydown = (event) => {
       document.body.appendChild(elem);
       elem.click();
       document.body.removeChild(elem);
-      mdd.style.display = "none";
    }
 };
