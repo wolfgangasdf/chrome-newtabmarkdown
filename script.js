@@ -9,22 +9,28 @@ async function markedIniAndRender() { // add source pos tags for headings to mar
    // this stores original tokenizer stuff which can be called. Otherwise, rules are not initialized.
    var origlexer = new marked.Lexer({ ...marked.defaults, tokenizer: new marked.Tokenizer() });
 
-   const tokenizer = {
-      heading(src) { // add source position tag
+   const tokenizer = { // add source position tag
+      heading(src) { 
          var res = origlexer.tokenizer.heading(src);
-         if (res) res.charno = md.value.length - src.length;
-         return res;
+         if (res) {
+            res.tokens = this.lexer.inline(res.text);
+            res.charno = md.value.length - src.length;
+            return res;
+         }
       },
-      paragraph(src) { // add source position tag
+      paragraph(src) {
          var res = origlexer.tokenizer.paragraph(src);
-         if (res) res.charno = md.value.length - src.length;
-         return res;
+         if (res) {
+            res.tokens = this.lexer.inline(res.text);
+            res.charno = md.value.length - src.length;
+            return res;
+         }
       },
    };
    marked.use({ tokenizer });
 
    const walkTokens = (token) => {
-      if (token.charno) { // append charno tag token!
+      if (token.charno) { // append charno!
          var ct = { type: 'html', text: '<div hidden class="tag" data-charno=' + token.charno + '></div>' };
          if (token.tokens) { token.tokens.push(ct); } else { token.tokens = [ct]; }
       }
@@ -35,11 +41,11 @@ async function markedIniAndRender() { // add source pos tags for headings to mar
 }
 
 function renderit() {
-   ht.innerHTML = marked(md.value);
+   ht.innerHTML = marked.parse(md.value);
 }
 
 function updateht() {
-   if (typeof marked !== "function") { // dynamically load marked
+   if (typeof marked === "undefined") { // dynamically load marked
       markedIniAndRender();
    } else
       renderit();
@@ -78,24 +84,40 @@ mdd.onkeyup = () => { // update html on edit
    updateht();
 };
 
-ht.ondblclick = function (e) { // double click: find source position
-   var curr = e.target || e.srcElement;
-   toggleEditor(true);
-   var pos = 0;
-   while (curr) {
-      if (curr.className === 'tag') { pos = curr.dataset.charno }
-      else if (child = curr.querySelector('.tag')) pos = child.dataset.charno;
-      if (pos) {
-         break;
+ht.addEventListener('click', function (e) {
+   if (e.detail === 3) { // triple click
+      var curr = e.target;
+      var pos = 0;
+      if ( !(curr != ht && ht.contains(curr)) ) { // not a child of ht clicked? find closest element!
+         mindy = 1e10;
+         curr = null;
+         for (child of ht.children) {
+            dy = Math.abs(e.clientY - (child.getBoundingClientRect().top + child.getBoundingClientRect().height / 2))
+            if (mindy > dy) {
+               mindy = dy;
+               curr = child;
+            }
+         }
       }
-      next = curr.nextElementSibling; // code tag node is after clicked node
-      if (next) { curr = next } else { curr = curr.parentNode }; // or go up?
+      if (curr) {
+         while (curr) {
+            if (curr.className === 'tag') { 
+               pos = curr.dataset.charno;
+               break;
+            } else if (child = curr.querySelector('.tag')) {
+               pos = child.dataset.charno;
+               break;
+            }
+            curr = curr.nextElementSibling || curr.parentNode; // try next node or go up
+         }
+      }
+      toggleEditor(true);
+      md.focus();
+      md.setSelectionRange(pos, pos);
+      md.blur();
+      md.focus();
    }
-   md.focus();
-   md.setSelectionRange(pos, pos);
-   md.blur();
-   md.focus();
-};
+});
 
 window.onstorage = (event) => { // Inter Tab Synchronization
    if (event.key === "notes") md.value = event.newValue
