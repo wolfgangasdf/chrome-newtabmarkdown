@@ -4,7 +4,7 @@ Chrome extension that overrides Chrome's new tab page with a markdown notebook, 
 
 - <kbd>Escape</kbd> - toggle between editor (html below it) and html only, the document is saved if the editor is closed. 
 - You can also triple-click on the page to open the editor and jump close to that point.
-- <kbd>Command</kbd> or <kbd>Ctrl</kbd> + <kbd>s</kbd> - download a backup.
+- <kbd>Command</kbd> or <kbd>Ctrl</kbd> + <kbd>s</kbd> - download a backup, use <kbd>Shift</kbd> to get the html.
 - You might need to click the page to make the hotkeys work.
 - It synchronizes if open in multiple tabs.
 

@@ -135,8 +135,8 @@ document.onkeydown = (event) => {
    } else if ((event.metaKey || event.ctrlKey) && event.key === 's') { // backup
       event.preventDefault();
       var elem = window.document.createElement('a');
-      elem.download = "chrome-newtabmarkdown-backup-" + new Date().toISOString() + ".md";
-      elem.href = window.URL.createObjectURL(new Blob([md.value], { type: "text/plain" }));
+      elem.download = "chrome-newtabmarkdown-backup-" + new Date().toISOString() + (event.shiftKey ? ".html" : ".md");
+      elem.href = window.URL.createObjectURL(new Blob([event.shiftKey ? document.documentElement.outerHTML : md.value], { type: (event.shiftKey ? "text/html" : "text/plain") }));
       document.body.appendChild(elem);
       elem.click();
       document.body.removeChild(elem);
